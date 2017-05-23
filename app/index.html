@@ -35,22 +35,28 @@
       </div>
       <div class="row">
         <div class="col-sm-12">
-          <div>
-            <input type="file" id="file" />
-          </div>
-          <div id="image-container">
-            <canvas width="500" height="500"></canvas>
-            <div>
-              <span>Top Line:</span><br/>
-              <input id="topLineText" type="text"><br/>
-              <span>Bottom Line:</span><br/>
-              <input id="bottomLineText" type="text"><br/>
-              <button id="saveBtn">Save</button>
-            </div>
-          </div>
+          <canvas id="canvas" width="500" height="500"></canvas>
         </div>
       </div>
     </div>
+
+    <script>
+      var canvas = document.querySelector( '#canvas' );
+      var ctx = canvas.getContext( '2d' );
+
+
+      var image = new Image();
+      image.onload = function() {
+        ctx.drawImage( image, 0, 0 );
+        //makeGrayScale();
+      }
+      image.src = "images/fry.jpg";
+      canvas.width = image.width;
+      canvas.height = image.height;
+
+      // var makePixelGrayScale = function( r, g, b, a )
+
+    </script>
 
     <!-- build:js scripts/vendor.js -->
     <!-- bower:js -->
