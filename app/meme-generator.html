@@ -1,0 +1,169 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>canvas</title>
+
+    <link rel="apple-touch-icon" href="apple-touch-icon.png">
+    <!-- Place favicon.ico in the root directory -->
+
+    <!-- build:css styles/vendor.css -->
+    <!-- bower:css -->
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:css styles/main.css -->
+    <link rel="stylesheet" href="styles/main.css">
+    <!-- endbuild -->
+
+    <!-- build:js scripts/vendor/modernizr.js -->
+    <script src="/bower_components/modernizr/modernizr.js"></script>
+    <!-- endbuild -->
+  </head>
+
+  <body>
+    <!--[if IE]>
+      <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <div class="container">
+      <div class="header">
+        <h3 class="text-muted">canvas</h3>
+      </div>
+      <div class="row">
+        <div class="col-sm-12">
+          <div>
+            <input type="file" id="file" />
+          </div>
+          <div id="image-container">
+            <canvas width="500" height="500"></canvas>
+            <div>
+              <span>Top Line:</span><br/>
+              <input id="topLineText" type="text"><br/>
+              <span>Bottom Line:</span><br/>
+              <input id="bottomLineText" type="text"><br/>
+              <button id="saveBtn">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function textChangeListener(evt) {
+        var id = evt.target.id;
+        var text = evt.target.value;
+
+        if (id == "topLineText") {
+          window.topLineText = text;
+        } else {
+          window.bottomLineText = text;
+        }
+
+        redrawMeme(window.imageSrc, window.topLineText, window.bottomLineText);
+      }
+
+      function redrawMeme(image, topLine, bottomLine) {
+        // Get Canvas2DContext
+        var canvas = document.querySelector('canvas');
+        var ctx = canvas.getContext("2d");
+        // Your code here
+
+        if (image != null) {
+          canvas.height = image.height;
+          canvas.width = image.width;
+          ctx.drawImage(image, 0, 0);
+        }
+
+        ctx.font = '48px Impact';
+        ctx.textAlign = 'center';
+        ctx.stokeStyle = 'black';
+        ctx.lineWidth = 3;
+        ctx.lineJoin = 'round';
+        ctx.fillStyle = 'white';
+
+        if (topLine != null) {
+          var topLine = topLine.toUpperCase();
+          ctx.fillText(topLine, canvas.width / 2, 58);
+          ctx.strokeText(topLine, canvas.width / 2, 58);
+        }
+
+        if (bottomLine != null) {
+          var bottomLine = bottomLine.toUpperCase();
+          ctx.fillText(bottomLine, canvas.width / 2, canvas.height - 20);
+          ctx.strokeText(bottomLine, canvas.width / 2, canvas.height - 20);
+        }
+
+      }
+
+      function saveFile() {
+        window.open(document.querySelector('canvas').toDataURL());
+      }
+
+      function handleFileSelect(evt) {
+        var canvasWidth = 500;
+        var canvasHeight = 500;
+        var file = evt.target.files[0];
+
+
+
+        var reader = new FileReader();
+        reader.onload = function(fileObject) {
+          var data = fileObject.target.result;
+
+          // Create an image object
+          var image = new Image();
+          image.onload = function() {
+
+            window.imageSrc = this;
+            redrawMeme(window.imageSrc, null, null);
+          }
+
+          // Set image data to background image.
+          image.src = data;
+          console.log(fileObject.target.result);
+        };
+        reader.readAsDataURL(file)
+      }
+
+      window.topLineText = "";
+      window.bottomLineText = "";
+      var input1 = document.getElementById('topLineText');
+      var input2 = document.getElementById('bottomLineText');
+      input1.oninput = textChangeListener;
+      input2.oninput = textChangeListener;
+      document.getElementById('file').addEventListener('change', handleFileSelect, false);
+      document.querySelector('button').addEventListener('click', saveFile, false);
+    </script>
+
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="/bower_components/jquery/dist/jquery.js"></script>
+    <script src="/bower_components/modernizr/modernizr.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:js scripts/plugins.js -->
+    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/affix.js"></script>
+    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/alert.js"></script>
+    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/dropdown.js"></script>
+    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/tooltip.js"></script>
+    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/modal.js"></script>
+    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/transition.js"></script>
+    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/button.js"></script>
+    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/popover.js"></script>
+    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/carousel.js"></script>
+    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/scrollspy.js"></script>
+    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/collapse.js"></script>
+    <script src="/bower_components/bootstrap-sass/assets/javascripts/bootstrap/tab.js"></script>
+    <!-- endbuild -->
+
+    <!-- build:js scripts/main.js -->
+    <script src="scripts/main.js"></script>
+    <!-- endbuild -->
+  </body>
+
+</html>
